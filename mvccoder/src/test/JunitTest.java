@@ -15,5 +15,6 @@ public class JunitTest {
 	@Test
 	public void testTest(){
 		Assert.assertNotNull(JunitBeanFactory.getContext());
+		Assert.assertNotNull(JunitBeanFactory.getContext());
 	}
 }
