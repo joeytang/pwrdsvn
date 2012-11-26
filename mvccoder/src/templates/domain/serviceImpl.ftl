@@ -2,7 +2,7 @@ package ${project.org}.service.impl;
 
 import ${project.org}.dao.${domain.name}Dao;
 import ${domain.packageName}.${domain.name};
-<#if (domain.id.type==statics["com.wanmei.domain.FieldHelper"].TYPE_MANY2ONE)>
+<#if !domain.isMany2ManyKey && (domain.id.type==statics["com.wanmei.domain.FieldHelper"].TYPE_MANY2ONE)>
 import ${domain.id.entityPackage}.${domain.id.entityName};
 </#if>
 <#list domain.many2ManyRelationFields as f>
@@ -24,7 +24,7 @@ import java.util.List;
  * ${domain.label}模块service
  */
 @Service("${domain.name?uncap_first}Service")
-public class ${domain.name}ServiceImpl  extends BaseServiceImpl<${domain.name},<#if domain.isMany2ManyKey>${domain.name}<#elseif (domain.id.type==statics["com.wanmei.domain.FieldHelper"].TYPE_MANY2ONE)>${domain.id.entityName}<#else>${domain.id.primaryType}</#if>,${domain.name}Dao>  implements ${domain.name}Service {
+public class ${domain.name}ServiceImpl  extends BaseServiceImpl<${domain.name},<#if domain.isMany2ManyKey>${domain.name}<#elseif !domain.isMany2ManyKey && (domain.id.type==statics["com.wanmei.domain.FieldHelper"].TYPE_MANY2ONE)>${domain.id.entityName}<#else>${domain.id.primaryType}</#if>,${domain.name}Dao>  implements ${domain.name}Service {
 	<#list domain.many2ManyRelationFields as f>
 	@Autowired
 	private ${project.domainMap[f.entityName].name}Dao ${project.domainMap[f.entityName].name?uncap_first}Dao;
@@ -43,7 +43,7 @@ public class ${domain.name}ServiceImpl  extends BaseServiceImpl<${domain.name},<
 	}
 	</#list>
 	
-	<#if (domain.id.type==statics["com.wanmei.domain.FieldHelper"].TYPE_MANY2ONE)>
+	<#if !domain.isMany2ManyKey && (domain.id.type==statics["com.wanmei.domain.FieldHelper"].TYPE_MANY2ONE)>
 	@Override
 	public ${domain.name} save(${domain.name} entity) {
 		if(null == entity){

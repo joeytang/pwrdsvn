@@ -1,7 +1,7 @@
 package ${project.org}.service;
 
 import ${domain.packageName}.${domain.name};
-<#if (domain.id.type==statics["com.wanmei.domain.FieldHelper"].TYPE_MANY2ONE)>
+<#if !domain.isMany2ManyKey && (domain.id.type==statics["com.wanmei.domain.FieldHelper"].TYPE_MANY2ONE)>
 import ${domain.id.entityPackage}.${domain.id.entityName};
 </#if>
 <#list domain.many2ManyRelationFields as f>
@@ -20,7 +20,7 @@ import java.util.List;
  * Date: ${project.currentTime} 
  * ${domain.label}service接口
 */
-public interface ${domain.name}Service extends BaseService<${domain.name},<#if domain.isMany2ManyKey>${domain.name}<#elseif (domain.id.type==statics["com.wanmei.domain.FieldHelper"].TYPE_MANY2ONE)>${domain.id.entityName}<#else>${domain.id.primaryType}</#if>,${domain.name}Dao> {
+public interface ${domain.name}Service extends BaseService<${domain.name},<#if domain.isMany2ManyKey>${domain.name}<#elseif !domain.isMany2ManyKey && (domain.id.type==statics["com.wanmei.domain.FieldHelper"].TYPE_MANY2ONE)>${domain.id.entityName}<#else>${domain.id.primaryType}</#if>,${domain.name}Dao> {
 	<#list domain.many2ManyRelationFields as f>
 	/**
 	 * 根据${domain.label}id列出关联的${f.label}

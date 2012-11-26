@@ -15,7 +15,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 
 import ${project.org}.domain.helper.UserHelper;
 </#if>
-<#if (domain.id.type==statics["com.wanmei.domain.FieldHelper"].TYPE_MANY2ONE)>
+<#if !domain.isMany2ManyKey && !domain.isMany2ManyKey && (domain.id.type==statics["com.wanmei.domain.FieldHelper"].TYPE_MANY2ONE)>
 import ${domain.id.entityPackage}.${domain.id.entityName};
 </#if>
 /**
@@ -253,7 +253,7 @@ public class ${domain.name}<#if domain.isUser><#if project.security.type==static
 		+"]";
 	}
 	</#if>
-	<#if (domain.id.type==statics["com.wanmei.domain.FieldHelper"].TYPE_MANY2ONE)>
+	<#if !domain.isMany2ManyKey &&  !domain.isMany2ManyKey && (domain.id.type==statics["com.wanmei.domain.FieldHelper"].TYPE_MANY2ONE)>
 	public void validId(){
 		if(null == ${domain.id.name}){
 			this.${domain.id.name} = new ${domain.id.entityName}(<#assign ii=0><#list project.domainMap[domain.id.entityName].fields as f><#if (ii!=0)>,</#if>this.${f.name}<#assign ii=ii+1> </#list>);

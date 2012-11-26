@@ -11,7 +11,7 @@ import ${t};
  */
 @Controller<#if project.codeType == statics["com.wanmei.domain.ProjectHelper"].CODE_TYPE_ALL>("back${domain.name}Action")</#if>
 @RequestMapping("<#if project.codeType == statics["com.wanmei.domain.ProjectHelper"].CODE_TYPE_ALL>/security</#if>/${domain.name?uncap_first}")
-public class ${domain.name}Controller  extends MvcControllerTemplate<${domain.name},<#if (domain.id.type==statics["com.wanmei.domain.FieldHelper"].TYPE_MANY2ONE)>${domain.id.entityName}<#else>${domain.id.primaryType}</#if>,${domain.name}Service>  {
+public class ${domain.name}Controller  extends MvcControllerTemplate<${domain.name},<#if !domain.isMany2ManyKey && (domain.id.type==statics["com.wanmei.domain.FieldHelper"].TYPE_MANY2ONE)>${domain.id.entityName}<#else>${domain.id.primaryType}</#if>,${domain.name}Service>  {
 
 	<#if !domain.disabledControllers?? || domain.disabledControllers?index_of("save") == -1>
 	<#if domain.isMultipart>
@@ -46,8 +46,8 @@ public class ${domain.name}Controller  extends MvcControllerTemplate<${domain.na
 	 * @throws Exception
 	 */
 	@RequestMapping(value = "/update/{id}")
-	public String update(HttpServletRequest request,HttpServletResponse response, @PathVariable <#if (domain.id.type==statics["com.wanmei.domain.FieldHelper"].TYPE_MANY2ONE)>String<#else>${domain.id.primaryType}</#if> id, ModelMap modelMap) {
-		return super.update(request,response,<#if (domain.id.type==statics["com.wanmei.domain.FieldHelper"].TYPE_MANY2ONE)>${domain.id.entityName}.convert(id)<#else>id</#if>,modelMap);
+	public String update(HttpServletRequest request,HttpServletResponse response, @PathVariable <#if !domain.isMany2ManyKey && (domain.id.type==statics["com.wanmei.domain.FieldHelper"].TYPE_MANY2ONE)>String<#else>${domain.id.primaryType}</#if> id, ModelMap modelMap) {
+		return super.update(request,response,<#if !domain.isMany2ManyKey && (domain.id.type==statics["com.wanmei.domain.FieldHelper"].TYPE_MANY2ONE)>${domain.id.entityName}.convert(id)<#else>id</#if>,modelMap);
 	}
 	</#if>
 	
@@ -59,8 +59,8 @@ public class ${domain.name}Controller  extends MvcControllerTemplate<${domain.na
 	 * @throws Exception
 	 */
 	@RequestMapping(value = "/view/{id}")
-	public String view(HttpServletRequest request,HttpServletResponse response, @PathVariable <#if (domain.id.type==statics["com.wanmei.domain.FieldHelper"].TYPE_MANY2ONE)>String<#else>${domain.id.primaryType}</#if> id, ModelMap modelMap) {
-		return super.view(request,response,<#if (domain.id.type==statics["com.wanmei.domain.FieldHelper"].TYPE_MANY2ONE)>${domain.id.entityName}.convert(id)<#else>id</#if>,modelMap);
+	public String view(HttpServletRequest request,HttpServletResponse response, @PathVariable <#if !domain.isMany2ManyKey && (domain.id.type==statics["com.wanmei.domain.FieldHelper"].TYPE_MANY2ONE)>String<#else>${domain.id.primaryType}</#if> id, ModelMap modelMap) {
+		return super.view(request,response,<#if !domain.isMany2ManyKey && (domain.id.type==statics["com.wanmei.domain.FieldHelper"].TYPE_MANY2ONE)>${domain.id.entityName}.convert(id)<#else>id</#if>,modelMap);
 	}
 	</#if>
 	
@@ -71,8 +71,8 @@ public class ${domain.name}Controller  extends MvcControllerTemplate<${domain.na
 	 * @return
 	 */
 	@RequestMapping(value = "/remove/{id}")
-	public void remove(HttpServletRequest request,HttpServletResponse response,  @PathVariable <#if (domain.id.type==statics["com.wanmei.domain.FieldHelper"].TYPE_MANY2ONE)>String<#else>${domain.id.primaryType}</#if> id, ModelMap modelMap) {
-		super.remove(request, response,<#if (domain.id.type==statics["com.wanmei.domain.FieldHelper"].TYPE_MANY2ONE)>${domain.id.entityName}.convert(id)<#else>id</#if>, modelMap);
+	public void remove(HttpServletRequest request,HttpServletResponse response,  @PathVariable <#if !domain.isMany2ManyKey && (domain.id.type==statics["com.wanmei.domain.FieldHelper"].TYPE_MANY2ONE)>String<#else>${domain.id.primaryType}</#if> id, ModelMap modelMap) {
+		super.remove(request, response,<#if !domain.isMany2ManyKey && (domain.id.type==statics["com.wanmei.domain.FieldHelper"].TYPE_MANY2ONE)>${domain.id.entityName}.convert(id)<#else>id</#if>, modelMap);
 	}
 	</#if>
 	
@@ -83,8 +83,8 @@ public class ${domain.name}Controller  extends MvcControllerTemplate<${domain.na
 	 * @return
 	 */
 	@RequestMapping(value = "/removeMore")
-	public void removeMore(HttpServletRequest request,HttpServletResponse response, <#if (domain.id.type==statics["com.wanmei.domain.FieldHelper"].TYPE_MANY2ONE)>String<#else>${domain.id.primaryType}</#if>[] ids, ModelMap modelMap) {
-		<#if (domain.id.type==statics["com.wanmei.domain.FieldHelper"].TYPE_MANY2ONE)>
+	public void removeMore(HttpServletRequest request,HttpServletResponse response, <#if !domain.isMany2ManyKey && (domain.id.type==statics["com.wanmei.domain.FieldHelper"].TYPE_MANY2ONE)>String<#else>${domain.id.primaryType}</#if>[] ids, ModelMap modelMap) {
+		<#if !domain.isMany2ManyKey && (domain.id.type==statics["com.wanmei.domain.FieldHelper"].TYPE_MANY2ONE)>
 		if(null != ids && ids.length > 0){
 			${domain.id.entityName}[] ${domain.id.entityName?uncap_first}s = new ${domain.id.entityName}[ids.length];
 			int i = 0 ;
@@ -212,7 +212,7 @@ public class ${domain.name}Controller  extends MvcControllerTemplate<${domain.na
 			json.put(RenderUtils.KEY_ERROR,"请求出错，重新提交");
 			return json;
 		}
-		<#if (domain.id.type==statics["com.wanmei.domain.FieldHelper"].TYPE_MANY2ONE)>
+		<#if !domain.isMany2ManyKey && (domain.id.type==statics["com.wanmei.domain.FieldHelper"].TYPE_MANY2ONE)>
 		if(null == domain.get${domain.id.name?cap_first}() && null != this.baseService.get(new ${domain.id.entityName}(<#assign ii=0><#list project.domainMap[domain.id.entityName].fields as f><#if (ii!=0)>,</#if>domain.get${f.name?cap_first}()<#assign ii=ii+1> </#list>))){
 			json = RenderUtils.getStatusValidParam();
 			json.put(RenderUtils.KEY_ERROR,"当前唯一标识的记录已经存在");

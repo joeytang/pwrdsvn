@@ -29,7 +29,7 @@ import org.apache.commons.lang.StringUtils;
  */
 @Controller<#if project.codeType == statics["com.wanmei.domain.ProjectHelper"].CODE_TYPE_ALL>("view${domain.name}Action")</#if>
 @RequestMapping("<#if project.codeType == statics["com.wanmei.domain.ProjectHelper"].CODE_TYPE_ALL>/view</#if>/${domain.name?uncap_first}")
-public class ${domain.name}Controller  extends MvcControllerTemplate<${domain.name},<#if (domain.id.type==statics["com.wanmei.domain.FieldHelper"].TYPE_MANY2ONE)>${domain.id.entityName}<#else>${domain.id.primaryType}</#if>,${domain.name}Service>  {
+public class ${domain.name}Controller  extends MvcControllerTemplate<${domain.name},<#if !domain.isMany2ManyKey && (domain.id.type==statics["com.wanmei.domain.FieldHelper"].TYPE_MANY2ONE)>${domain.id.entityName}<#else>${domain.id.primaryType}</#if>,${domain.name}Service>  {
 
 	<#if !domain.disabledControllers?? || domain.disabledControllers?index_of("input") == -1>
 	/**

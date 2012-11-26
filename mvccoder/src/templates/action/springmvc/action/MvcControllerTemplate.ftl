@@ -114,6 +114,7 @@ public class MvcControllerTemplate<T extends Serializable,PK extends Serializabl
 			modelMap.put("sort", sort);
 		}
 		CommonList commonList = new CommonList(size, pageNo, pageSize);
+		commonList.setSearchStr(sBuf.toString());
 		modelMap.put("commonList", commonList);
 		return StringUtil.lowerFirstChar( className)+"/list";
 	}

@@ -68,7 +68,7 @@ public class DomainExporter extends AbstractExporter {
 					getProject().getConfPath() + File.separator
 					+  ClassUtil.packageToPath("hbm") + File.separator +  domain.getLowerFirstName()+"-hbm.xml", root);
 		}
-		
+		System.out.println(domain.getName());
 		fu.analysisTemplate("templates", DOMAIN_FTL,
 				getProject().getSrcPath() + File.separator
 				+  ClassUtil.packageToPath(getProject().getOrg()+".domain") + File.separator +  domain.getName()+".java", root);

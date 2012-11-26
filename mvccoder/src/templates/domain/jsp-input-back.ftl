@@ -205,7 +205,7 @@ $(document).ready(function(){
 });
 </script>
 <form  class="form" id="inputForm" method="post" action="<#noparse>$</#noparse>{ctx }<#if project.codeType == statics["com.wanmei.domain.ProjectHelper"].CODE_TYPE_ALL>/security</#if>/${domain.lowerFirstName}/save" <#if domain.isMultipart>enctype="multipart/form-data"</#if>>
-	<#if (domain.id.type!=statics["com.wanmei.domain.FieldHelper"].TYPE_MANY2ONE)>
+	<#if !domain.isMany2ManyKey && (domain.id.type!=statics["com.wanmei.domain.FieldHelper"].TYPE_MANY2ONE)>
 	<input type="hidden" name="${domain.id.name}" id="${domain.id.name}Id" value="<#noparse>${</#noparse>${domain.lowerFirstName}.${domain.id.name}<#noparse>}</#noparse>" />
 	</#if>
 	<#list domain.one2ManyRelationFields as f >
@@ -243,7 +243,7 @@ $(document).ready(function(){
 			</select>
 			<#else>
 				<#assign inId=false>
-				<#if (domain.id.type==statics["com.wanmei.domain.FieldHelper"].TYPE_MANY2ONE)>
+				<#if !domain.isMany2ManyKey && (domain.id.type==statics["com.wanmei.domain.FieldHelper"].TYPE_MANY2ONE)>
 				<#list project.domainMap[domain.id.entityName].fields as ff>
 				<#if ff.name == f.name>
 				<#assign inId=true>
@@ -267,7 +267,7 @@ $(document).ready(function(){
 			<textarea class="textarea" style="width:280px;height:100px;" name="${f.name}" id="${f.name}Id"><#noparse>${</#noparse>${domain.lowerFirstName}.${f.name}<#noparse>}</#noparse></textarea>		
 			<#else>
 				<#assign inId=false>
-				<#if (domain.id.type==statics["com.wanmei.domain.FieldHelper"].TYPE_MANY2ONE)>
+				<#if !domain.isMany2ManyKey && (domain.id.type==statics["com.wanmei.domain.FieldHelper"].TYPE_MANY2ONE)>
 				<#list project.domainMap[domain.id.entityName].fields as ff>
 				<#if ff.name == f.name>
 				<#assign inId=true>

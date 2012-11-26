@@ -11,7 +11,7 @@
    		</#list>
    		</composite-id>
 		<#else>
-			<#if (domain.id.type==statics["com.wanmei.domain.FieldHelper"].TYPE_MANY2ONE)>
+			<#if !domain.isMany2ManyKey && (domain.id.type==statics["com.wanmei.domain.FieldHelper"].TYPE_MANY2ONE)>
 		<composite-id name="${domain.id.name}" class="${domain.id.entityPackage}.${domain.id.entityName}">
 		<#list project.domainMap[domain.id.entityName].fields as f>
 			<key-property name="${f.name}" column="${f.column}" type="java.lang.${f.primaryType}"/>
